@@ -13,6 +13,6 @@ public record JobApplicationRequest(
     @NotBlank String companyName,
     @NotBlank String jobRole,
     @NotBlank String location,
-    @NotBlank LocalDate applicationDate,
+    @NotNull(message = "Application date is required") LocalDate applicationDate,
     @NotBlank String jobUrl
 ) {}

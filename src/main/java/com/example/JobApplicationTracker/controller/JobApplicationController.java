@@ -43,7 +43,7 @@ public class JobApplicationController {
 
     @PatchMapping(value = "/update", params = {"jobId"})
     public JobApplicationResponse patchJobApplication(
-            @PathVariable long jobId,
+            @RequestParam long jobId,
             @RequestBody JobApplicationRequest jobApplicationRequest) {
 
         return jobApplicationServiceImpl.updateJobApplicationByJobId(jobId, jobApplicationRequest);
