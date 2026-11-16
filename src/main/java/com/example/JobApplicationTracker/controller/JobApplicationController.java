@@ -36,6 +36,16 @@ public class JobApplicationController {
         return jobApplicationServiceImpl.getJobApplicationByJobId(jobId);
     }
 
+    @GetMapping(value = "/get")
+    public List<JobApplicationResponse> getAllJobApplications() {
+        return jobApplicationServiceImpl.getAllJobApplications();
+    }
+
+    @GetMapping(value = "/get", params = {"location"})
+    public List<JobApplicationResponse> getAllJobApplicationsByLocation(String location) {
+        return jobApplicationServiceImpl.getJobApplicationsByLocation(location);
+    }
+
     @DeleteMapping("/delete")
     public void deleteJobApplicationById(@RequestParam long jobId) {
         jobApplicationServiceImpl.deleteJobApplicationByJobId(jobId);

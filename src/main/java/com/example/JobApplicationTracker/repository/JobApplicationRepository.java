@@ -11,5 +11,5 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
     List<JobApplication> findByCompany(String company);
     JobApplication findByJobId(long jobId);
     void deleteByJobId(long jobId);
-
+    List<JobApplication> findByLocation(String location);
 }

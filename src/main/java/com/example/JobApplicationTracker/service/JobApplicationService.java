@@ -10,6 +10,8 @@ public interface JobApplicationService {
 
     void createJobApplication(JobApplicationRequest jobApplicationRequest);
     List<JobApplicationResponse> getJobApplicationsByCompany(String company);
+    List<JobApplicationResponse> getJobApplicationsByLocation(String location);
+    List<JobApplicationResponse> getAllJobApplications();
     JobApplicationResponse getJobApplicationByJobId(long jobId);
     void deleteJobApplicationByJobId(long jobId);
     JobApplicationResponse updateJobApplicationByJobId(long jobId, JobApplicationRequest jobApplicationRequest);

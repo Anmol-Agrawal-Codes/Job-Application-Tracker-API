@@ -66,6 +66,50 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         return jobApplicationResponseList;
     }
 
+    public List<JobApplicationResponse> getAllJobApplications() {
+        List<JobApplication> jobApplications = jobApplicationRepository.findAll();
+
+        if (jobApplications.isEmpty()) {
+            throw new ApplicationNotFoundException("No Job Application Found");
+        }
+
+        List<JobApplicationResponse> jobApplicationResponseList = new ArrayList<>();
+
+        for (JobApplication jobApplication : jobApplications) {
+            JobApplicationResponse jobApplicationResponse = new JobApplicationResponse(
+                    jobApplication.getJobId(),
+                    jobApplication.getCompany(),
+                    jobApplication.getJobRole(),
+                    jobApplication.getLocation(),
+                    jobApplication.getApplicationDate()
+            );
+            jobApplicationResponseList.add(jobApplicationResponse);
+        }
+        return jobApplicationResponseList;
+    }
+
+    public List<JobApplicationResponse> getJobApplicationsByLocation(String location) {
+        List<JobApplication> jobApplications = jobApplicationRepository.findByLocation(location);
+
+        if (jobApplications.isEmpty()) {
+            throw new ApplicationNotFoundException("No Job Application Found");
+        }
+
+        List<JobApplicationResponse> jobApplicationResponseList = new ArrayList<>();
+
+        for (JobApplication jobApplication : jobApplications) {
+            JobApplicationResponse jobApplicationResponse = new JobApplicationResponse(
+                    jobApplication.getJobId(),
+                    jobApplication.getCompany(),
+                    jobApplication.getJobRole(),
+                    jobApplication.getLocation(),
+                    jobApplication.getApplicationDate()
+            );
+            jobApplicationResponseList.add(jobApplicationResponse);
+        }
+        return jobApplicationResponseList;
+    }
+
     public JobApplicationResponse getJobApplicationByJobId(long jobId) {
         JobApplication jobApplication = jobApplicationRepository.findByJobId(jobId);
         if (jobApplication == null) {
@@ -114,6 +158,6 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         }
 
         jobApplicationRepository.save(jobApplication);
-        return getJobApplicationByJobId(jobId);
+        return getJobApplicationByJobId(jobApplication.getJobId());
     }
 }
