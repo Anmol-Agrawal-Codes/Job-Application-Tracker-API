@@ -61,7 +61,7 @@ public class JobApplicationController {
     }
 
     @PatchMapping(value = "/updateApplicationStatus", params = {"jobId"})
-    public void updateJobApplicationStatusByJobId(@RequestParam long jobId, @RequestBody UpdatedJobApplicationStatus applicationStatus) {
-        jobApplicationServiceImpl.updateJobApplicationStatusByJobId(jobId, applicationStatus);
+    public UpdatedJobApplicationStatus updateJobApplicationStatusByJobId(@RequestParam long jobId, @Valid @RequestBody UpdatedJobApplicationStatus applicationStatus) {
+        return jobApplicationServiceImpl.updateJobApplicationStatusByJobId(jobId, applicationStatus);
     }
 }

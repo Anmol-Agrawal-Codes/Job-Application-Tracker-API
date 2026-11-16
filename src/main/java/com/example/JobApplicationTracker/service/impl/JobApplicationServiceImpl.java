@@ -170,7 +170,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         return getJobApplicationByJobId(jobApplication.getJobId());
     }
 
-    public void updateJobApplicationStatusByJobId(long jobId, UpdatedJobApplicationStatus applicationStatus) {
+    public UpdatedJobApplicationStatus updateJobApplicationStatusByJobId(long jobId, UpdatedJobApplicationStatus applicationStatus) {
         JobApplication jobApplication = jobApplicationRepository.findByJobId(jobId);
         if (jobApplication == null) { throw new ApplicationNotFoundException("No Application Found with id: " + jobId); }
 
@@ -179,5 +179,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
         jobApplication.setApplicationStatus(applicationStatus.status());
         jobApplicationRepository.save(jobApplication);
+
+        return new UpdatedJobApplicationStatus(applicationStatus.status());
     }
 }

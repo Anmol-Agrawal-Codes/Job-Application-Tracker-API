@@ -18,6 +18,6 @@ public interface JobApplicationService {
     void deleteJobApplicationByJobId(long jobId);
     JobApplicationResponse updateJobApplicationByJobId(long jobId, JobApplicationRequest jobApplicationRequest);
 
-    void updateJobApplicationStatusByJobId(long jobId, UpdatedJobApplicationStatus applicationStatus);
+    UpdatedJobApplicationStatus updateJobApplicationStatusByJobId(long jobId, UpdatedJobApplicationStatus applicationStatus);
 }
 

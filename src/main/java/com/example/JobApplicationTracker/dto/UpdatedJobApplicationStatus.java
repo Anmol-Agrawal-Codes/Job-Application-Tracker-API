@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record UpdatedJobApplicationStatus(
-        @NotNull @NotBlank ApplicationStatus status
+        @NotNull(message = "Status is required")
+        ApplicationStatus status
 ) {
 }
