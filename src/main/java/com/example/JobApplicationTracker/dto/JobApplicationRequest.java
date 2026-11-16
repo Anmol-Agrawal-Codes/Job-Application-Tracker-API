@@ -1,14 +1,18 @@
 package com.example.JobApplicationTracker.dto;
 
-import java.util.Date;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+import java.time.LocalDate;
 
 public record JobApplicationRequest(
-    long jobId,
-    String companyName,
-    String jobRole,
-    String location,
-    Date applicationDate,
-    String jobUrl
-) {
-
-}
+    @NotNull(message = "Job ID is required")
+    @Positive(message = "Job ID must be positive")
+    Long jobId,
+    @NotBlank String companyName,
+    @NotBlank String jobRole,
+    @NotBlank String location,
+    @NotBlank LocalDate applicationDate,
+    @NotBlank String jobUrl
+) {}

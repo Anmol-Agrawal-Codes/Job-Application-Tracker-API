@@ -12,5 +12,6 @@ public interface JobApplicationService {
     List<JobApplicationResponse> getJobApplicationsByCompany(String company);
     JobApplicationResponse getJobApplicationByJobId(long jobId);
     void deleteJobApplicationByJobId(long jobId);
+    JobApplicationResponse updateJobApplicationByJobId(long jobId, JobApplicationRequest jobApplicationRequest);
 }
 

@@ -1,11 +1,12 @@
 package com.example.JobApplicationTracker.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public record JobApplicationResponse (
-    long jobId,
+    Long jobId,
+    String companyName,
     String jobRole,
     String location,
-    Date applicationDate
+    LocalDate applicationDate
 ){
 }

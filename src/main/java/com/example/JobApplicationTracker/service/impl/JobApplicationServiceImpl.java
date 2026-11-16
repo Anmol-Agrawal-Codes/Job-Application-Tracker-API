@@ -9,8 +9,8 @@ import com.example.JobApplicationTracker.service.JobApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,7 +27,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         long jobId = jobApplicationRequest.jobId();
         String company = jobApplicationRequest.companyName();
         String jobRole = jobApplicationRequest.jobRole();
-        Date applicationDate = jobApplicationRequest.applicationDate();
+        LocalDate applicationDate = jobApplicationRequest.applicationDate();
         String url = jobApplicationRequest.jobUrl();
         String location = jobApplicationRequest.location();
 
@@ -37,7 +37,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         jobApplication.setApplicationDate(applicationDate);
         jobApplication.setJobUrl(url);
         jobApplication.setLocation(location);
-        jobApplication.setRole(jobRole);
+        jobApplication.setJobRole(jobRole);
 
         jobApplicationRepository.save(jobApplication);
     }
@@ -55,6 +55,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
             JobApplicationResponse jobApplicationResponse = new JobApplicationResponse(
                     jobApplication.getJobId(),
                     jobApplication.getCompany(),
+                    jobApplication.getJobRole(),
                     jobApplication.getLocation(),
                     jobApplication.getApplicationDate()
             );
@@ -71,20 +72,48 @@ public class JobApplicationServiceImpl implements JobApplicationService {
             throw new ApplicationNotFoundException("No Application Found with id: " + jobId);
         }
 
-        JobApplicationResponse jobApplicationResponse = new JobApplicationResponse(
+        return new JobApplicationResponse(
                 jobApplication.getJobId(),
-                jobApplication.getRole(),
+                jobApplication.getCompany(),
+                jobApplication.getJobRole(),
                 jobApplication.getLocation(),
                 jobApplication.getApplicationDate()
         );
-        return jobApplicationResponse;
     }
 
     public void deleteJobApplicationByJobId(long jobId) {
+        if(getJobApplicationByJobId(jobId) == null) {
+            throw new ApplicationNotFoundException("No Application Found with id: " + jobId);
+        }
         jobApplicationRepository.deleteByJobId(jobId);
     }
 
-    public List<JobApplication> findAll() {
-        return jobApplicationRepository.findAll();
+    public JobApplicationResponse updateJobApplicationByJobId(long jobId, JobApplicationRequest jobApplicationRequest) {
+        JobApplication jobApplication = jobApplicationRepository.findByJobId(jobId);
+        if (jobApplication == null) {
+            throw new ApplicationNotFoundException("No Application Found with id: " + jobId);
+        }
+
+        if (jobApplicationRequest.jobId() != null) {
+            jobApplication.setJobId(jobApplicationRequest.jobId());
+        }
+        if (jobApplicationRequest.companyName() != null) {
+            jobApplication.setCompany(jobApplicationRequest.companyName());
+        }
+        if (jobApplicationRequest.jobRole() != null) {
+            jobApplication.setJobRole(jobApplicationRequest.jobRole());
+        }
+        if (jobApplicationRequest.applicationDate() != null) {
+            jobApplication.setApplicationDate(jobApplicationRequest.applicationDate());
+        }
+        if (jobApplicationRequest.jobUrl() != null) {
+            jobApplication.setJobUrl(jobApplicationRequest.jobUrl());
+        }
+        if (jobApplicationRequest.location() != null) {
+            jobApplication.setLocation(jobApplicationRequest.location());
+        }
+
+        jobApplicationRepository.save(jobApplication);
+        return getJobApplicationByJobId(jobId);
     }
 }

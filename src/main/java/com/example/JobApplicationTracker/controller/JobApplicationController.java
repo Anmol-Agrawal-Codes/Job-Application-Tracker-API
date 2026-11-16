@@ -40,4 +40,12 @@ public class JobApplicationController {
     public void deleteJobApplicationById(@RequestParam long jobId) {
         jobApplicationServiceImpl.deleteJobApplicationByJobId(jobId);
     }
+
+    @PatchMapping(value = "/update", params = {"jobId"})
+    public JobApplicationResponse patchJobApplication(
+            @PathVariable long jobId,
+            @RequestBody JobApplicationRequest jobApplicationRequest) {
+
+        return jobApplicationServiceImpl.updateJobApplicationByJobId(jobId, jobApplicationRequest);
+    }
 }
