@@ -2,6 +2,7 @@ package com.example.JobApplicationTracker.service;
 
 import com.example.JobApplicationTracker.dto.JobApplicationRequest;
 import com.example.JobApplicationTracker.dto.JobApplicationResponse;
+import com.example.JobApplicationTracker.dto.UpdatedJobApplicationStatus;
 import com.example.JobApplicationTracker.entity.JobApplication;
 import com.example.JobApplicationTracker.enums.ApplicationStatus;
 
@@ -17,6 +18,6 @@ public interface JobApplicationService {
     void deleteJobApplicationByJobId(long jobId);
     JobApplicationResponse updateJobApplicationByJobId(long jobId, JobApplicationRequest jobApplicationRequest);
 
-    void updateJobApplicationStatusByJobId(long jobId, ApplicationStatus applicationStatus);
+    void updateJobApplicationStatusByJobId(long jobId, UpdatedJobApplicationStatus applicationStatus);
 }
 

@@ -2,6 +2,7 @@ package com.example.JobApplicationTracker.service.impl;
 
 import com.example.JobApplicationTracker.dto.JobApplicationRequest;
 import com.example.JobApplicationTracker.dto.JobApplicationResponse;
+import com.example.JobApplicationTracker.dto.UpdatedJobApplicationStatus;
 import com.example.JobApplicationTracker.entity.JobApplication;
 import com.example.JobApplicationTracker.enums.ApplicationStatus;
 import com.example.JobApplicationTracker.errors.ApplicationNotFoundException;
@@ -27,6 +28,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
     public void createJobApplication(JobApplicationRequest jobApplicationRequest) {
         long jobId = jobApplicationRequest.jobId();
+        ApplicationStatus applicationStatus = ApplicationStatus.APPLIED;
         String company = jobApplicationRequest.companyName();
         String jobRole = jobApplicationRequest.jobRole();
         LocalDate applicationDate = jobApplicationRequest.applicationDate();
@@ -38,6 +40,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         jobApplication.setCompany(company);
         jobApplication.setApplicationDate(applicationDate);
         jobApplication.setJobUrl(url);
+        jobApplication.setApplicationStatus(applicationStatus);
         jobApplication.setLocation(location);
         jobApplication.setJobRole(jobRole);
 
@@ -58,6 +61,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
                     jobApplication.getJobId(),
                     jobApplication.getCompany(),
                     jobApplication.getJobRole(),
+                    jobApplication.getApplicationStatus(),
                     jobApplication.getLocation(),
                     jobApplication.getApplicationDate()
             );
@@ -82,6 +86,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
                     jobApplication.getJobId(),
                     jobApplication.getCompany(),
                     jobApplication.getJobRole(),
+                    jobApplication.getApplicationStatus(),
                     jobApplication.getLocation(),
                     jobApplication.getApplicationDate()
             );
@@ -104,6 +109,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
                     jobApplication.getJobId(),
                     jobApplication.getCompany(),
                     jobApplication.getJobRole(),
+                    jobApplication.getApplicationStatus(),
                     jobApplication.getLocation(),
                     jobApplication.getApplicationDate()
             );
@@ -122,6 +128,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
                 jobApplication.getJobId(),
                 jobApplication.getCompany(),
                 jobApplication.getJobRole(),
+                jobApplication.getApplicationStatus(),
                 jobApplication.getLocation(),
                 jobApplication.getApplicationDate()
         );
@@ -163,13 +170,14 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         return getJobApplicationByJobId(jobApplication.getJobId());
     }
 
-    public void updateJobApplicationStatusByJobId(long jobId, ApplicationStatus applicationStatus) {
+    public void updateJobApplicationStatusByJobId(long jobId, UpdatedJobApplicationStatus applicationStatus) {
         JobApplication jobApplication = jobApplicationRepository.findByJobId(jobId);
         if (jobApplication == null) { throw new ApplicationNotFoundException("No Application Found with id: " + jobId); }
 
         ApplicationStatus currentApplicationStatus = jobApplication.getApplicationStatus();
-        if (currentApplicationStatus.canTransitionTo(applicationStatus)) { throw new InvalidApplicationStatusTransitionException("Invalid Application Status!"); }
+        if (!currentApplicationStatus.canTransitionTo(applicationStatus.status())) { throw new InvalidApplicationStatusTransitionException("Invalid Application Status!"); }
 
-        jobApplication.setApplicationStatus(applicationStatus);
+        jobApplication.setApplicationStatus(applicationStatus.status());
+        jobApplicationRepository.save(jobApplication);
     }
 }

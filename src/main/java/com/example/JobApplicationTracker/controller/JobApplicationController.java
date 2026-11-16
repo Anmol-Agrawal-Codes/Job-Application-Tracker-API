@@ -2,6 +2,7 @@ package com.example.JobApplicationTracker.controller;
 
 import com.example.JobApplicationTracker.dto.JobApplicationRequest;
 import com.example.JobApplicationTracker.dto.JobApplicationResponse;
+import com.example.JobApplicationTracker.dto.UpdatedJobApplicationStatus;
 import com.example.JobApplicationTracker.enums.ApplicationStatus;
 import com.example.JobApplicationTracker.service.JobApplicationService;
 import com.example.JobApplicationTracker.service.impl.JobApplicationServiceImpl;
@@ -56,12 +57,11 @@ public class JobApplicationController {
     public JobApplicationResponse patchJobApplication(
             @RequestParam long jobId,
             @RequestBody JobApplicationRequest jobApplicationRequest) {
-
         return jobApplicationServiceImpl.updateJobApplicationByJobId(jobId, jobApplicationRequest);
     }
 
-    @PatchMapping(value = "/updateApplicationStatus", params = {"jobId, applicationStatus"})
-    public void updateJobApplicationStatus(@RequestParam long jobId, @RequestParam ApplicationStatus applicationStatus) {
+    @PatchMapping(value = "/updateApplicationStatus", params = {"jobId"})
+    public void updateJobApplicationStatusByJobId(@RequestParam long jobId, @RequestBody UpdatedJobApplicationStatus applicationStatus) {
         jobApplicationServiceImpl.updateJobApplicationStatusByJobId(jobId, applicationStatus);
     }
 }
