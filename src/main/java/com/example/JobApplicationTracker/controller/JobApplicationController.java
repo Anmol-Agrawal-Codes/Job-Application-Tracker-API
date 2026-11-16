@@ -2,6 +2,7 @@ package com.example.JobApplicationTracker.controller;
 
 import com.example.JobApplicationTracker.dto.JobApplicationRequest;
 import com.example.JobApplicationTracker.dto.JobApplicationResponse;
+import com.example.JobApplicationTracker.enums.ApplicationStatus;
 import com.example.JobApplicationTracker.service.JobApplicationService;
 import com.example.JobApplicationTracker.service.impl.JobApplicationServiceImpl;
 import jakarta.validation.Valid;
@@ -21,41 +22,46 @@ public class JobApplicationController {
         this.jobApplicationServiceImpl = jobApplicationServiceImpl;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/createApplication")
     public void createJobApplication(@Valid @RequestBody JobApplicationRequest jobApplicationRequest) {
         jobApplicationServiceImpl.createJobApplication(jobApplicationRequest);
     }
 
-    @GetMapping(value = "/get", params = {"company"})
+    @GetMapping(value = "/getApplication", params = {"company"})
     public List<JobApplicationResponse> getJobApplicationByCompany(@RequestParam String company) {
         return jobApplicationServiceImpl.getJobApplicationsByCompany(company);
     }
 
-    @GetMapping(value = "/get", params = {"jobId"})
+    @GetMapping(value = "/getApplication", params = {"jobId"})
     public JobApplicationResponse getJobApplicationById(@RequestParam long jobId) {
         return jobApplicationServiceImpl.getJobApplicationByJobId(jobId);
     }
 
-    @GetMapping(value = "/get")
+    @GetMapping(value = "/getApplication")
     public List<JobApplicationResponse> getAllJobApplications() {
         return jobApplicationServiceImpl.getAllJobApplications();
     }
 
-    @GetMapping(value = "/get", params = {"location"})
+    @GetMapping(value = "/getApplication", params = {"location"})
     public List<JobApplicationResponse> getAllJobApplicationsByLocation(String location) {
         return jobApplicationServiceImpl.getJobApplicationsByLocation(location);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/deleteApplication")
     public void deleteJobApplicationById(@RequestParam long jobId) {
         jobApplicationServiceImpl.deleteJobApplicationByJobId(jobId);
     }
 
-    @PatchMapping(value = "/update", params = {"jobId"})
+    @PatchMapping(value = "/updateApplication", params = {"jobId"})
     public JobApplicationResponse patchJobApplication(
             @RequestParam long jobId,
             @RequestBody JobApplicationRequest jobApplicationRequest) {
 
         return jobApplicationServiceImpl.updateJobApplicationByJobId(jobId, jobApplicationRequest);
+    }
+
+    @PatchMapping(value = "/updateApplicationStatus", params = {"jobId, applicationStatus"})
+    public void updateJobApplicationStatus(@RequestParam long jobId, @RequestParam ApplicationStatus applicationStatus) {
+        jobApplicationServiceImpl.updateJobApplicationStatusByJobId(jobId, applicationStatus);
     }
 }

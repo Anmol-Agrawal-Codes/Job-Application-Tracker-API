@@ -3,7 +3,9 @@ package com.example.JobApplicationTracker.service.impl;
 import com.example.JobApplicationTracker.dto.JobApplicationRequest;
 import com.example.JobApplicationTracker.dto.JobApplicationResponse;
 import com.example.JobApplicationTracker.entity.JobApplication;
+import com.example.JobApplicationTracker.enums.ApplicationStatus;
 import com.example.JobApplicationTracker.errors.ApplicationNotFoundException;
+import com.example.JobApplicationTracker.errors.InvalidApplicationStatusTransitionException;
 import com.example.JobApplicationTracker.repository.JobApplicationRepository;
 import com.example.JobApplicationTracker.service.JobApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,5 +161,15 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
         jobApplicationRepository.save(jobApplication);
         return getJobApplicationByJobId(jobApplication.getJobId());
+    }
+
+    public void updateJobApplicationStatusByJobId(long jobId, ApplicationStatus applicationStatus) {
+        JobApplication jobApplication = jobApplicationRepository.findByJobId(jobId);
+        if (jobApplication == null) { throw new ApplicationNotFoundException("No Application Found with id: " + jobId); }
+
+        ApplicationStatus currentApplicationStatus = jobApplication.getApplicationStatus();
+        if (currentApplicationStatus.canTransitionTo(applicationStatus)) { throw new InvalidApplicationStatusTransitionException("Invalid Application Status!"); }
+
+        jobApplication.setApplicationStatus(applicationStatus);
     }
 }

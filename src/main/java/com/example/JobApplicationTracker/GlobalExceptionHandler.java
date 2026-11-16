@@ -1,7 +1,9 @@
 package com.example.JobApplicationTracker;
 
 import com.example.JobApplicationTracker.dto.ApplicationNotFoundErrorResponse;
+import com.example.JobApplicationTracker.dto.InvalidApplicationStatusTransitionErrorResponse;
 import com.example.JobApplicationTracker.errors.ApplicationNotFoundException;
+import com.example.JobApplicationTracker.errors.InvalidApplicationStatusTransitionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,5 +27,19 @@ public class GlobalExceptionHandler {
                 request.getDescription(false)
         );
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidApplicationStatusTransitionException.class)
+    public ResponseEntity<InvalidApplicationStatusTransitionErrorResponse> handleInvalidStatusTransition(
+            InvalidApplicationStatusTransitionException ex, WebRequest request) {
+
+        InvalidApplicationStatusTransitionErrorResponse error = new InvalidApplicationStatusTransitionErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "Invalid Status Transition",
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 }

@@ -1,9 +1,7 @@
 package com.example.JobApplicationTracker.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.JobApplicationTracker.enums.ApplicationStatus;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +17,9 @@ public class JobApplication{
         private String company;
         private String jobRole;
         private LocalDate applicationDate;
+        @Enumerated(EnumType.STRING)
+        @Column(nullable = false)
+        private ApplicationStatus applicationStatus;
         private String jobUrl;
         private String location;
 }
